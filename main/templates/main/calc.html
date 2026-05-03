@@ -1,0 +1,475 @@
+{% extends 'main/layout.html' %}
+{% block title %}Калькуляторы питания{% endblock %}
+
+{% block content %}
+<style>
+.calculators-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.calculators-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .calculators-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.calculator-card {
+    background: #1a1a1a;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.calc-header {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    padding: 25px;
+    border-bottom: 3px solid #C7F000;
+    text-align: center;
+}
+
+.calc-header h2 {
+    color: #C7F000;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+}
+
+.calc-header p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+    margin: 0;
+}
+
+.calc-form {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 1;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.input-label {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.calc-select,
+.calc-input {
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px;
+    padding: 14px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.calc-select:focus,
+.calc-input:focus {
+    outline: none;
+    border-color: #C7F000;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 0 3px rgba(199, 240, 0, 0.2);
+}
+
+/* ИСПРАВЛЕНИЕ: тёмный фон для опций select */
+.calc-select option {
+    background: #2d2d2d;
+    color: #ffffff;
+    padding: 10px;
+}
+
+/* Тёмные placeholder */
+.calc-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    opacity: 1;
+}
+
+.calc-button {
+    background: #C7F000;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 12px;
+    padding: 18px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(199, 240, 0, 0.3);
+}
+
+.calc-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(199, 240, 0, 0.4);
+    filter: brightness(0.95);
+}
+
+.calc-button:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 22px;
+    font-weight: 900;
+}
+
+/* Результаты */
+.calc-result {
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.04);
+    border-top: 2px solid rgba(255, 255, 255, 0.16);
+    animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-value {
+    font-size: 42px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.result-category {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.result-category.normal {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.result-category.underweight {
+    background: rgba(241, 196, 15, 0.2);
+    color: #f1c40f;
+}
+
+.result-category.overweight {
+    background: rgba(230, 126, 34, 0.2);
+    color: #e67e22;
+}
+
+.result-category.obese {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+.result-info {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}
+
+.result-label {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* БЖУ сетка */
+.bju-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.bju-item {
+    text-align: center;
+    padding: 15px 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.bju-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.bju-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.bju-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.bju-cal {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+}
+
+.bju-item.protein {
+    border-bottom: 3px solid #e74c3c;
+}
+
+.bju-item.fat {
+    border-bottom: 3px solid #f39c12;
+}
+
+.bju-item.carbs {
+    border-bottom: 3px solid #27ae60;
+}
+
+.disclaimer {
+    text-align: center;
+    color: rgba(255, 255, 255);
+    font-size: 15px;
+    padding: 15px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    background: #1a1a1a;
+    transition: all 0.2s ease;
+}
+</style>
+
+<div class="calculators-page">
+    <h1 class="page-title">🧮 Калькуляторы питания</h1>
+
+    <div class="calculators-grid">
+        <!-- Калькулятор 1: ИМТ -->
+        <div class="calculator-card">
+            <div class="calc-header">
+                <h2>📊 ИМТ</h2>
+                <p>Индекс массы тела</p>
+            </div>
+
+            <form method="POST" class="calc-form">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label class="input-label">Рост (см)</label>
+                    <input type="number" name="bmi_height" value="{{ bmi_height|default:'' }}"
+                           placeholder="170" min="50" max="250" required class="calc-input">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Вес (кг)</label>
+                    <input type="number" name="bmi_weight" value="{{ bmi_weight|default:'' }}"
+                           placeholder="70" min="20" max="300" step="0.1" required class="calc-input">
+                </div>
+
+                <button type="submit" name="calc_bmi" class="calc-button">
+                    <span>Рассчитать</span>
+                    <span class="btn-icon">=</span>
+                </button>
+            </form>
+
+            {% if bmi_result %}
+            <div class="calc-result">
+                <div class="result-value">{{ bmi_result.value }}</div>
+                <div class="result-category {{ bmi_result.category_class }}">
+                    {{ bmi_result.category }}
+                </div>
+                <div class="result-info">Норма: 18.5 - 24.9</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Калькулятор 2: Калории (TDEE) -->
+        <div class="calculator-card">
+            <div class="calc-header">
+                <h2>🔥 Калории</h2>
+                <p>Суточная норма</p>
+            </div>
+
+            <form method="POST" class="calc-form">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label class="input-label">Пол</label>
+                    <select name="tdee_sex" required class="calc-select">
+                        <option value="male" {% if tdee_sex == 'male' %}selected{% endif %}>👨 Мужской</option>
+                        <option value="female" {% if tdee_sex == 'female' %}selected{% endif %}>👩 Женский</option>
+                    </select>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label">Возраст</label>
+                        <input type="number" name="tdee_age" value="{{ tdee_age|default:'' }}"
+                               placeholder="25" min="10" max="100" required class="calc-input">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Рост (см)</label>
+                        <input type="number" name="tdee_height" value="{{ tdee_height|default:'' }}"
+                               placeholder="170" min="100" max="250" required class="calc-input">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Вес (кг)</label>
+                    <input type="number" name="tdee_weight" value="{{ tdee_weight|default:'' }}"
+                           placeholder="70" min="30" max="200" step="0.1" required class="calc-input">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Активность</label>
+                    <select name="tdee_activity" required class="calc-select">
+                        <option value="1.2" {% if tdee_activity == '1.2' %}selected{% endif %}>🪑 Сидячий</option>
+                        <option value="1.375" {% if tdee_activity == '1.375' %}selected{% endif %}>🚶 Лёгкая</option>
+                        <option value="1.55" {% if tdee_activity == '1.55' %}selected{% endif %}>🏃 Средняя</option>
+                        <option value="1.725" {% if tdee_activity == '1.725' %}selected{% endif %}>💪 Высокая</option>
+                        <option value="1.9" {% if tdee_activity == '1.9' %}selected{% endif %}>🏋️ Очень высокая</option>
+                    </select>
+                </div>
+
+                <button type="submit" name="calc_tdee" class="calc-button">
+                    <span>Рассчитать</span>
+                    <span class="btn-icon">=</span>
+                </button>
+            </form>
+
+            {% if tdee_result %}
+            <div class="calc-result">
+                <div class="result-value">{{ tdee_result.calories }}</div>
+                <div class="result-label">ккал/день</div>
+                <div class="result-info">
+                    <div>Похудение: <strong>{{ tdee_result.lose }}</strong> ккал</div>
+                    <div>Поддержание: <strong>{{ tdee_result.maintain }}</strong> ккал</div>
+                    <div>Набор массы: <strong>{{ tdee_result.gain }}</strong> ккал</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Калькулятор 3: БЖУ -->
+        <div class="calculator-card">
+            <div class="calc-header">
+                <h2>🥗 БЖУ</h2>
+                <p>Белки, жиры, углеводы</p>
+            </div>
+
+            <form method="POST" class="calc-form">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label class="input-label">Калории в день</label>
+                    <input type="number" name="bju_calories" value="{{ bju_calories|default:'' }}"
+                           placeholder="2000" min="800" max="5000" required class="calc-input">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Цель</label>
+                    <select name="bju_goal" required class="calc-select">
+                        <option value="balance" {% if bju_goal == 'balance' %}selected{% endif %}>⚖️ Баланс</option>
+                        <option value="lose" {% if bju_goal == 'lose' %}selected{% endif %}>📉 Похудение</option>
+                        <option value="gain" {% if bju_goal == 'gain' %}selected{% endif %}>📈 Набор массы</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Твой вес (кг)</label>
+                    <input type="number" name="bju_weight" value="{{ bju_weight|default:'' }}"
+                        placeholder="70" min="30" max="200" step="0.1" required class="calc-input">
+                </div>
+                <button type="submit" name="calc_bju" class="calc-button">
+                    <span>Рассчитать</span>
+                    <span class="btn-icon">=</span>
+                </button>
+
+
+            </form>
+
+            {% if bju_result %}
+            <div class="calc-result">
+                <div class="bju-grid">
+                    <div class="bju-item protein">
+                        <div class="bju-icon">🥩</div>
+                        <div class="bju-value">{{ bju_result.protein_grams }}г</div>
+                        <div class="bju-label">Белки ({{ bju_result.protein_percent|floatformat:0 }}%)</div>
+                        <div class="bju-cal">{{ bju_result.protein_cal }} ккал</div>
+                    </div>
+
+                    <div class="bju-item fat">
+                        <div class="bju-icon">🥑</div>
+                        <div class="bju-value">{{ bju_result.fat_grams }}г</div>
+                        <div class="bju-label">Жиры ({{ bju_result.fat_percent|floatformat:0 }}%)</div>
+                        <div class="bju-cal">{{ bju_result.fat_cal }} ккал</div>
+                    </div>
+
+                    <div class="bju-item carbs">
+                        <div class="bju-icon">🌾</div>
+                        <div class="bju-value">{{ bju_result.carbs_grams }}г</div>
+                        <div class="bju-label">Углеводы ({{ bju_result.carbs_percent|floatformat:0 }}%)</div>
+                        <div class="bju-cal">{{ bju_result.carbs_cal }} ккал</div>
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="disclaimer">
+        ⚠️ Все расчёты носят ознакомительный характер и не заменяют консультацию врача или диетолога
+    </div>
+</div>
+{% endblock %}

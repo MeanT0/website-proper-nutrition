@@ -1,0 +1,409 @@
+{% extends 'main/layout.html' %}
+{% block title %}Главная — Питание без мифов{% endblock %}
+
+{% block content %}
+<style>
+  .landing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* ===== ПОЛНОЭКРАННЫЕ СЕКЦИИ (Исправлено) ===== */
+  .fullscreen-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 80px 40px;
+    overflow: hidden; /* ВАЖНО: обрезаем всё лишнее */
+    z-index: 1;
+}
+
+/* Слой с фоном (вместо background-attachment: fixed) */
+  .fullscreen-section::before {
+    content: '';
+    position: absolute;
+    /* Запас по краям, чтобы не было белых полос при прокрутке */
+    top: -50px; left: -50px; right: -50px; bottom: -50px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+/* Затемняющая вуаль */
+  .fullscreen-section::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: -1;
+}
+
+/* Привязка картинок к конкретным секциям */
+  .hero-section::before {
+    background-image: url('static/main/img/food_back.jpeg');
+}
+
+  .how-it-works-section::before {
+    background-image: url('static/main/img/marathon.jpg');
+}
+
+  .cta-section::before {
+    background-image: url('static/main/img/green_back.jpg');
+}
+
+/* Белая секция (без картинки) */
+  .features-section {
+    background: var(--background-primary);
+    min-height: auto;
+    padding: 100px 40px;
+    z-index: 2; /* Поверх фонов */
+}
+
+  .features-section::before,
+  .features-section::after {
+    display: none; /* Убираем фон и вуаль у белой секции */
+}
+
+  .section-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    text-align: center;
+    color: var(--brand-clear-white);
+    animation: fadeInUp 1s ease;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    margin: 0 0 20px 0;
+    line-height: 1.1;
+    color: var(--brand-clear-white);
+  }
+
+  .section-subtitle {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    line-height: 1.6;
+    margin: 0 0 40px 0;
+    opacity: 0.9;
+    color: var(--brand-clear-white);
+  }
+
+  /* ===== HERO СЕКЦИЯ ===== */
+  .hero-section {
+    background-image: url('static/main/img/food_back.jpeg');
+    position: relative;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--brand-lime);
+    color: var(--brand-black);
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ===== СЕКЦИЯ ПРЕИМУЩЕСТВ (Белая) ===== */
+  .features-section {
+    background: var(--background-primary);
+    min-height: auto;
+    padding: 100px 40px;
+  }
+
+  .features-section::before {
+    display: none; /* Убираем затемнение для белой секции */
+  }
+
+  .features-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+  }
+
+  .feature-card {
+    background: var(--background-primary-elevated);
+    border: 1px solid var(--brand-gray);
+    border-radius: var(--radius-lg);
+    padding: 40px 30px;
+    box-shadow: 0 2px 8px var(--black-opacity-8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 24px var(--black-opacity-16);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .feature-title {
+    font: var(--font-h550);
+    color: var(--brand-black);
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
+  }
+
+  .feature-text {
+    font: var(--font-p200);
+    color: var(--brand-black);
+    opacity: 0.8;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ===== СЕКЦИЯ "КАК ЭТО РАБОТАЕТ" ===== */
+  .how-it-works-section {
+    background-image: url('static/main/img/marathon.jpg');
+  }
+
+  .steps-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .step-item:hover {
+    transform: translateX(10px);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .step-number {
+    width: 60px;
+    height: 60px;
+    background: var(--brand-lime);
+    color: var(--brand-black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .step-content h3 {
+    font: var(--font-h300);
+    color: var(--brand-clear-white);
+    margin: 0 0 8px 0;
+    font-size: 1.3rem;
+  }
+
+  .step-content p {
+    font: var(--font-p200);
+    color: var(--brand-clear-white);
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ===== CTA СЕКЦИЯ ===== */
+  .cta-section {
+    background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop');
+  }
+
+  /* ===== КНОПКИ ===== */
+  .btn-landing {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 48px;
+    background: var(--brand-lime);
+    color: var(--brand-black);
+    text-decoration: none;
+    border-radius: 30px;
+    font: var(--font-h300);
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(199, 240, 0, 0.4);
+  }
+
+  .btn-landing:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(199, 240, 0, 0.6);
+    filter: brightness(0.95);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 2px solid var(--brand-lime);
+    color: var(--brand-lime);
+    box-shadow: none;
+  }
+
+  .btn-secondary:hover {
+    background: var(--brand-lime);
+    color: var(--brand-black);
+  }
+
+  /* ===== ДИСКЛЕЙМЕР ===== */
+  .disclaimer {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--brand-black);
+    color: var(--white-opacity-50);
+    font: var(--font-p100);
+    font-size: 0.9rem;
+  }
+
+  /* ===== АДАПТИВНОСТЬ ===== */
+  @media (max-width: 768px) {
+    .fullscreen-section {
+      background-attachment: scroll; /* Отключаем фикс на мобильных */
+      padding: 60px 20px;
+    }
+
+    .step-item {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="landing-container">
+  <!-- HERO СЕКЦИЯ -->
+  <section class="fullscreen-section hero-section">
+    <div class="section-content">
+      <div class="hero-badge">🎯 Научный подход к питанию</div>
+      <h1 class="section-title">Питайся правильно.<br>Без сложных диет.</h1>
+      <p class="section-subtitle">
+        Персонализированный расчёт калорий и БЖУ на основе доказательной нутрициологии.
+        Без регистрации. Без сбора данных. Только факты.
+      </p>
+      <a href="/calculators" class="btn-landing">
+        <span>🚀</span>
+        <span>Начать расчёт</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ ПРЕИМУЩЕСТВ (Белая) -->
+  <section class="fullscreen-section features-section">
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🧮</span>
+        <h3 class="feature-title">Точные калькуляторы</h3>
+        <p class="feature-text">
+          Рассчитайте ИМТ, суточную норму калорий и баланс БЖУ по международным формулам.
+          Учитываем пол, возраст, вес, рост и уровень активности.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">📚</span>
+        <h3 class="feature-title">Образовательные материалы</h3>
+        <p class="feature-text">
+          Понятные статьи о нутрициологии, разбор мифов о питании и практические рекомендации
+          по формированию пищевых привычек.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🔒</span>
+        <h3 class="feature-title">Полная приватность</h3>
+        <p class="feature-text">
+          Не требуем регистрации, не храним персональные данные. Все расчёты выполняются
+          локально — ваша информация остаётся только на вашем устройстве.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ "КАК ЭТО РАБОТАЕТ" -->
+  <section class="fullscreen-section how-it-works-section">
+    <div class="section-content">
+      <h2 class="section-title">Как это работает</h2>
+      <p class="section-subtitle">Три простых шага к осознанному питанию</p>
+
+      <div class="steps-container">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Введите свои данные</h3>
+            <p>Укажите рост, вес, возраст, пол и уровень физической активности. Это займёт меньше минуты.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Получите персональный расчёт</h3>
+            <p>Система автоматически рассчитает вашу норму калорий, оптимальное соотношение белков, жиров и углеводов.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Применяйте на практике</h3>
+            <p>Используйте полученные данные для планирования рациона. Изучайте материалы и формируйте полезные привычки.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA СЕКЦИЯ -->
+  <section class="fullscreen-section cta-section">
+    <div class="section-content">
+      <h2 class="section-title">Готовы изменить подход к питанию?</h2>
+      <p class="section-subtitle">
+        Присоединяйтесь к тысячам людей, которые уже научились питаться осознанно.
+        Начните с простого расчёта прямо сейчас.
+      </p>
+      <a href="/calculators" class="btn-landing">
+        <span>Рассчитать свою норму</span>
+        <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ДИСКЛЕЙМЕР -->
+  <div class="disclaimer">
+    ⚠️ Все расчёты носят ознакомительный характер и не заменяют консультацию врача или диетолога.
+  </div>
+</div>
+{% endblock %}

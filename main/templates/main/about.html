@@ -1,0 +1,314 @@
+{% extends 'main/layout.html' %}
+{% block title %}О проекте{% endblock %}
+
+{% block content %}
+<style>
+  /* ===== ОБЩИЕ НАСТРОЙКИ ===== */
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .about-section {
+    padding: 90px 20px;
+    position: relative;
+  }
+
+  /* ===== HERO / ИСТОРИЯ ===== */
+  .about-hero {
+    background: var(--brand-black);
+    color: var(--brand-clear-white);
+    text-align: center;
+    min-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .about-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin: 0 0 20px 0;
+    line-height: 1.2;
+  }
+
+  .about-hero p {
+    font-size: 1.2rem;
+    opacity: 0.85;
+    max-width: 750px;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .lime-accent {
+    color: var(--brand-lime);
+  }
+
+  /* ===== ПРИНЦИПЫ ===== */
+  .principles-section {
+    background: var(--background-primary);
+  }
+
+  .section-header {
+    text-align: center;
+    margin: 0 auto 60px;
+    max-width: 800px;
+  }
+
+  .section-header h2 {
+    font: var(--font-h550);
+    color: var(--brand-black);
+    margin: 0 0 15px 0;
+    font-size: 2rem;
+  }
+
+  .section-header p {
+    font: var(--font-p200);
+    color: var(--brand-black);
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .principle-card {
+    background: var(--background-primary-elevated);
+    border: 1px solid var(--brand-gray);
+    border-radius: var(--radius-lg);
+    padding: 35px 25px;
+    text-align: center;
+    box-shadow: 0 2px 8px var(--black-opacity-8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .principle-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px var(--black-opacity-16);
+  }
+
+  .principle-icon {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  .principle-title {
+    font: var(--font-h550);
+    color: var(--brand-black);
+    margin: 0 0 12px 0;
+    font-size: 1.35rem;
+  }
+
+  .principle-text {
+    font: var(--font-p200);
+    color: var(--brand-black);
+    opacity: 0.75;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ===== КОМАНДА И ТЕХНОЛОГИИ ===== */
+  .info-section {
+    background: var(--background-primary-elevated);
+    border-top: 1px solid var(--brand-gray);
+    border-bottom: 1px solid var(--brand-gray);
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 60px;
+    max-width: 1050px;
+    margin: 0 auto;
+  }
+
+  .info-block h3 {
+    font: var(--font-h550);
+    color: var(--brand-black);
+    margin: 0 0 20px 0;
+    font-size: 1.9rem;
+    border-left: 5px solid var(--brand-lime);
+    padding-left: 18px;
+  }
+
+  .info-block p, .info-block ul {
+    font: var(--font-p200);
+    color: var(--brand-black);
+    opacity: 0.8;
+    line-height: 1.7;
+    margin: 0 0 15px 0;
+  }
+
+  .info-block ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .info-block ul li {
+    margin-bottom: 10px;
+    padding-left: 22px;
+    position: relative;
+  }
+
+  .info-block ul li::before {
+    content: '▸';
+    color: var(--brand-lime);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  .info-note {
+    font-size: 0.95rem;
+    opacity: 0.6;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* ===== КОНТАКТЫ ===== */
+  .contact-section {
+    background: var(--brand-black);
+    color: var(--brand-clear-white);
+    text-align: center;
+  }
+
+  .contact-box {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 50px 30px;
+    border: 2px solid var(--brand-lime);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 30px var(--black-opacity-30);
+  }
+
+  .contact-box h2 {
+    font: var(--font-h550);
+    margin: 0 0 15px 0;
+    color: var(--brand-clear-white);
+    font-size: 2rem;
+  }
+
+  .contact-box p {
+    opacity: 0.85;
+    margin: 0 0 25px 0;
+    line-height: 1.6;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--brand-lime);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 14px 28px;
+    border: 2px solid var(--brand-lime);
+    border-radius: 30px;
+    transition: all 0.25s ease;
+  }
+
+  .contact-link:hover {
+    background: var(--brand-lime);
+    color: var(--brand-black);
+    transform: translateY(-2px);
+  }
+
+  /* ===== АДАПТИВНОСТЬ ===== */
+  @media (max-width: 768px) {
+    .about-section { padding: 70px 15px; }
+    .info-grid { gap: 40px; }
+    .contact-box { padding: 40px 20px; }
+    .contact-link { width: 100%; justify-content: center; }
+  }
+</style>
+
+<div class="about-container">
+  <!-- 1. Наша история (Hero) -->
+  <section class="about-section about-hero">
+    <h1>Почему мы <span class="lime-accent">создали</span> этот ресурс?</h1>
+    <p>
+      В интернете полно противоречивых советов, агрессивной рекламы и сложных приложений, требующих регистрации и подписок.
+      Мы решили дать людям простой, бесплатный и научно обоснованный инструмент, который помогает разобраться в питании
+      без лишнего шума, платных функций и рисков для приватности.
+    </p>
+  </section>
+
+  <!-- 2. Наши принципы -->
+  <section class="about-section principles-section">
+    <div class="section-header">
+      <h2>Четыре столпа проекта</h2>
+      <p>Каждая функция платформы строится на этих принципах. Никаких компромиссов с качеством и безопасностью.</p>
+    </div>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <span class="principle-icon">🔬</span>
+        <h3 class="principle-title">Научность</h3>
+        <p class="principle-text">Только доказательные данные и проверенные формулы (Миффлина-Сан Жеора). Никаких мифов, модных диет и псевдонаучных рекомендаций.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon">🔓</span>
+        <h3 class="principle-title">Открытость</h3>
+        <p class="principle-text">Полностью бесплатный доступ. Никаких скрытых платежей, премиум-функций, платных курсов или навязчивой рекламы.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon">🛡️</span>
+        <h3 class="principle-title">Приватность</h3>
+        <p class="principle-text">Мы не требуем регистрации и не храним ваши данные на серверах. Все расчёты выполняются локально — ваша информация остаётся только у вас.</p>
+      </div>
+      <div class="principle-card">
+        <span class="principle-icon">🎓</span>
+        <h3 class="principle-title">Образование</h3>
+        <p class="principle-text">Наша цель — не заставить вас считать каждую калорию, а научить понимать, как работает ваш организм и формировать устойчивые привычки.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Команда и Технологии -->
+  <section class="about-section info-section">
+    <div class="info-grid">
+      <div class="info-block">
+        <h3>О создателе</h3>
+        <p>Проект разработан студентом 1 курса группы <strong>ИСП-125-ир</strong>, обучающимся по специальности <strong>09.02.07 «Информационные системы и программирование»</strong> в Вологодском колледже связи и информационных технологий.</p>
+        <p>Цель проекта — объединить навыки веб-разработки с основами доказательной нутрициологии, создав полезный продукт, который реально помогает людям заботиться о здоровье без сложных инструкций.</p>
+        <p><strong>Руководитель:</strong> Комиссаров А.А.<br>
+        <strong>Нормоконтроль:</strong> Батракова С.Н.</p>
+        <p class="info-note">Проект выполнен в рамках дисциплины «Индивидуальный проект» (2025–2026 уч. год).</p>
+      </div>
+
+      <div class="info-block">
+        <h3>Технологический стек</h3>
+        <p>Платформа построена на современном, но простом наборе инструментов, обеспечивающем надёжность и лёгкость поддержки:</p>
+        <ul>
+          <li><strong>Python & Django</strong> — надёжный бэкенд для безопасной обработки данных и логики расчётов.</li>
+          <li><strong>HTML5 & CSS3</strong> — чистая семантическая вёрстка и адаптивный дизайн без лишних зависимостей.</li>
+          <li><strong>Отсутствие БД</strong> — архитектура проекта сознательно упрощена для максимальной автономности, скорости загрузки и соответствия учебным требованиям.</li>
+        </ul>
+        <p>Такой подход гарантирует мгновенный отклик интерфейса, прозрачность работы и полное соответствие требованиям нормоконтроля.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Контакты / Обратная связь -->
+  <section class="about-section contact-section">
+    <div class="contact-box">
+      <h2>Связаться с нами</h2>
+      <p>
+        Нашли неточность в расчётах, опечатку или есть идея по улучшению платформы?
+        Мы ценим вашу обратную связь и постоянно работаем над качеством ресурса.
+      </p>
+      <!-- ЗАМЕНИТЕ ССЫЛКУ НА ВАШ РЕАЛЬНЫЙ EMAIL ИЛИ ФОРМУ -->
+      <a href="mailto:student@college.ru" class="contact-link">📧 Написать автору</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

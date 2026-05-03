@@ -1,0 +1,23 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Новости{% endblock %}
+
+
+{% block content %}
+<div class="features" xmlns="http://www.w3.org/1999/html">
+        <h1>Новостная лента</h1>
+        {% if news %}
+            {% for n in news %}
+            <div class="news-card">
+                <h3 class="news-card__title">{{ n.title }}</h3>
+                <p class="news-card__text">{{ n.anons }}</p>
+                <div class="news-card__date">{{ n.date }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>На сайте в текущий момент отсутствуют записи</p>
+        {% endif %}
+
+        {# Комментарий #}
+    </div>
+{% endblock %}

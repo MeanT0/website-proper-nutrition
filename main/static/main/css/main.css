@@ -1,0 +1,227 @@
+
+body {
+  background: var(--background-primary); /* Светлый фон #f6f6f6 вместо синего */
+  color: var(--brand-black);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+/* ===== SIDEBAR DRAWER ===== */
+.sidebar-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-primary-elevated);
+  border: 1px solid var(--brand-gray);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px var(--black-opacity-8);
+  cursor: pointer;
+  color: var(--brand-black);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sidebar-toggle:hover { transform: scale(1.05); box-shadow: 0 4px 12px var(--black-opacity-20); }
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlays-default);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 999;
+}
+.sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+aside.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px !important;
+  height: 100vh !important;
+  background: var(--brand-black);
+  color: var(--brand-clear-white);
+  padding: var(--size-xl) !important;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  overflow-y: auto;
+  box-shadow: var(--shadow-menu);
+  /* Сброс старых стилей */
+  float: none !important;
+  border: none !important;
+}
+aside.sidebar-drawer.active { transform: translateX(0); }
+
+aside .logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: var(--size-xl);
+  padding-bottom: var(--size-md);
+  border-bottom: 1px solid var(--white-opacity-16);
+}
+aside .logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  position: static;
+  float: none;
+  right: auto;
+  top: auto;
+}
+aside .logo h2 {
+  font: var(--font-h550);
+  color: var(--brand-lime);
+  margin: 0;
+  position: static;
+  text-align: left;
+}
+
+aside h3 {
+  font: var(--font-c100);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--white-opacity-50);
+  margin: 0 0 var(--size-sm) 0 !important;
+}
+
+aside ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 auto 0;
+}
+aside ul li { margin: 4px 0; }
+
+aside ul li a,
+aside ul li button.add-record {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  color: var(--brand-clear-white);
+  font: var(--font-h300);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: background 0.15s ease, transform 0.15s ease;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  margin-top: 0 !important;
+}
+aside ul li a:hover,
+aside ul li button.add-record:hover {
+  background: var(--white-opacity-12);
+  transform: translateX(4px);
+  color: var(--brand-lime);
+}
+aside ul li i {
+  width: 20px;
+  text-align: center;
+  color: var(--brand-lime);
+  font-size: 16px;
+}
+
+/* Кнопка "Добавить запись" */
+aside ul li button.add-record {
+  margin-top: var(--size-md);
+  background: var(--brand-lime);
+  color: var(--brand-black);
+  font-weight: 600;
+}
+aside ul li button.add-record:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+/* Основной контент теперь занимает всю ширину */
+main {
+  padding: 80px 20px 20px;
+  transition: filter 0.3s ease;
+}
+.sidebar-overlay.active ~ main,
+aside.sidebar-drawer.active ~ main {
+  filter: blur(2px);
+}
+/* =========================================
+   ЛЕНТА НОВОСТЕЙ (ALERT WARNING)
+   ========================================= */
+.alert.alert-warning {
+  display: flex;
+  flex-direction: column;
+  background: var(--background-primary-elevated); /* Белый фон карточки */
+  border: 1px solid var(--brand-gray);
+  border-radius: var(--radius-lg); /* 16px скругление */
+  padding: var(--size-xl); /* 20px */
+  margin: 0 auto 20px;
+  max-width: 800px;
+  box-shadow: 0 2px 8px var(--black-opacity-8); /* Мягкая тень */
+  color: var(--brand-black);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alert.alert-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--black-opacity-20);
+}
+
+.alert.alert-warning h3 {
+  margin: 0 0 var(--size-sm);
+  font: var(--font-h550); /* 700 20px/26px */
+  color: var(--brand-black);
+  line-height: 1.3;
+}
+
+.alert.alert-warning p {
+  margin: 0;
+  font: var(--font-p200); /* 400 16px/20px */
+  color: var(--brand-black);
+  opacity: 0.85;
+  line-height: 1.5;
+  flex: 1; /* Толкает дату вниз */
+}
+
+.alert.alert-warning .date {
+  margin-top: auto;
+  padding-top: var(--size-sm);
+  font: var(--font-p100); /* 400 12px/20px */
+  color: var(--brand-black);
+  opacity: 0.5; /* Серый цвет через прозрачность */
+  text-align: right;
+  line-height: 1.4;
+}
+
+/* Исходное состояние: скрыто и немного смещено вниз */
+.fade-in-img {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    will-change: opacity, transform; /* Оптимизация для браузера */
+}
+
+/* Состояние после появления */
+.fade-in-img.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Опционально: эффект лёгкого увеличения */
+.fade-in-img.zoom {
+    transform: translateY(40px) scale(0.95);
+}
+.fade-in-img.zoom.is-visible {
+    transform: translateY(0) scale(1);
+}
