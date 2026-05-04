@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-51jx+yem&+w00l4q63gbem9km8$0h741(pc6i05*-!xdk^1ul@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'propernutrition.onrender.com']
 
 
 # Application definition
