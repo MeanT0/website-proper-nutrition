@@ -12,11 +12,12 @@
   /* ===== ПОЛНОЭКРАННЫЕ СЕКЦИИ (Исправлено) ===== */
   .fullscreen-section {
     min-height: 100vh;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    padding: 80px 40px;
     overflow: hidden; /* ВАЖНО: обрезаем всё лишнее */
     z-index: 1;
 }
@@ -24,6 +25,7 @@
 /* Слой с фоном (вместо background-attachment: fixed) */
   .fullscreen-section::before {
     content: '';
+    filter: blur(8px);
     position: absolute;
     /* Запас по краям, чтобы не было белых полос при прокрутке */
     top: -50px; left: -50px; right: -50px; bottom: -50px;
@@ -44,21 +46,14 @@
 
 /* Привязка картинок к конкретным секциям */
   .hero-section::before {
-    background-image: url('static/main/img/food_back.jpeg');
-}
-
-  .how-it-works-section::before {
-    background-image: url('static/main/img/marathon.jpg');
-}
-
-  .cta-section::before {
-    background-image: url('static/main/img/green_back.jpg');
+    background-image: url('static/main/img/food_back.jpg');
 }
 
 /* Белая секция (без картинки) */
   .features-section {
-    background: var(--background-primary);
+    background: rgb(156, 156, 156); !important
     min-height: auto;
+    align-items: center;
     padding: 100px 40px;
     z-index: 2; /* Поверх фонов */
 }
@@ -110,22 +105,8 @@
     position: relative;
   }
 
-  .hero-badge {
-    display: inline-block;
-    padding: 10px 24px;
-    background: var(--brand-lime);
-    color: var(--brand-black);
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 30px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
   /* ===== СЕКЦИЯ ПРЕИМУЩЕСТВ (Белая) ===== */
   .features-section {
-    background: var(--background-primary);
     min-height: auto;
     padding: 100px 40px;
   }
@@ -139,22 +120,21 @@
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
+    gap: 0px;
   }
 
   .feature-card {
-    background: var(--background-primary-elevated);
-    border: 1px solid var(--brand-gray);
-    border-radius: var(--radius-lg);
+    background: #c6c6c6;
+
+
     padding: 40px 30px;
-    box-shadow: 0 2px 8px var(--black-opacity-8);
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
   }
 
   .feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 24px var(--black-opacity-16);
+
   }
 
   .feature-icon {
@@ -172,7 +152,7 @@
 
   .feature-text {
     font: var(--font-p200);
-    color: var(--brand-black);
+    color: rgb(45, 45, 45);
     opacity: 0.8;
     line-height: 1.6;
     margin: 0;
@@ -235,9 +215,7 @@
     line-height: 1.5;
   }
 
-  /* ===== CTA СЕКЦИЯ ===== */
-  .cta-section {
-    background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop');
+
   }
 
   /* ===== КНОПКИ ===== */
@@ -278,6 +256,8 @@
   /* ===== ДИСКЛЕЙМЕР ===== */
   .disclaimer {
     text-align: center;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
     padding: 30px 20px;
     background: var(--brand-black);
     color: var(--white-opacity-50);
@@ -301,22 +281,37 @@
       grid-template-columns: 1fr;
     }
   }
+
+  .t-cover__arrow {
+    bottom: 40px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    z-index: 9;
+  }
+
+  .t-cover__arrow-wrapper {
+    cursor: pointer;
+    display: inline-block;
+    transition: all .2s ease-in-out;
+    }
+
+  .t-cover__arrow-wrapper_animated {
+    -webkit-animation: t-arrow-bottom 1.7s ease infinite;
+    animation: t-arrow-bottom 1.7s ease infinite;
+    }
 </style>
 
 <div class="landing-container">
   <!-- HERO СЕКЦИЯ -->
   <section class="fullscreen-section hero-section">
     <div class="section-content">
-      <div class="hero-badge">🎯 Научный подход к питанию</div>
       <h1 class="section-title">Питайся правильно.<br>Без сложных диет.</h1>
       <p class="section-subtitle">
         Персонализированный расчёт калорий и БЖУ на основе доказательной нутрициологии.
-        Без регистрации. Без сбора данных. Только факты.
+        Без регистрации и сбора данных.
       </p>
-      <a href="/calculators" class="btn-landing">
-        <span>🚀</span>
-        <span>Начать расчёт</span>
-      </a>
     </div>
   </section>
 
@@ -404,6 +399,16 @@
   <!-- ДИСКЛЕЙМЕР -->
   <div class="disclaimer">
     ⚠️ Все расчёты носят ознакомительный характер и не заменяют консультацию врача или диетолога.
+  </div>
+</div>
+
+<div class="t-cover__arrow"><div class="t-cover__arrow-wrapper t-cover__arrow-wrapper_animated">
+  <div class="t-cover__arrow_mobile">
+    <svg role="presentation" class="t-cover__arrow-svg" style="fill:#ffffff;" x="0px" y="0px" width="38.417px" height="18.592px" viewBox="0 0 38.417 18.592">
+      <g>
+        <path d="M19.208,18.592c-0.241,0-0.483-0.087-0.673-0.261L0.327,1.74c-0.408-0.372-0.438-1.004-0.066-1.413c0.372-0.409,1.004-0.439,1.413-0.066L19.208,16.24L36.743,0.261c0.411-0.372,1.042-0.342,1.413,0.066c0.372,0.408,0.343,1.041-0.065,1.413L19.881,18.332C19.691,18.505,19.449,18.592,19.208,18.592z"></path>
+      </g>
+    </svg>
   </div>
 </div>
 {% endblock %}
