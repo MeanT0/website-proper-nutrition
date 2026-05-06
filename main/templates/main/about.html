@@ -73,10 +73,11 @@
 
   .principles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
-    max-width: 1100px;
+    max-width: 800px;
     margin: 0 auto;
+    justify-items: center;
   }
 
   .principle-card {
@@ -87,6 +88,8 @@
     text-align: center;
     box-shadow: 0 2px 8px var(--black-opacity-8);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 350px;
   }
 
   .principle-card:hover {
@@ -174,61 +177,10 @@
     font-style: italic;
   }
 
-  /* ===== КОНТАКТЫ ===== */
-  .contact-section {
-    background: var(--brand-black);
-    color: var(--brand-clear-white);
-    text-align: center;
-  }
-
-  .contact-box {
-    max-width: 650px;
-    margin: 0 auto;
-    padding: 50px 30px;
-    border: 2px solid var(--brand-lime);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 8px 30px var(--black-opacity-30);
-  }
-
-  .contact-box h2 {
-    font: var(--font-h550);
-    margin: 0 0 15px 0;
-    color: var(--brand-clear-white);
-    font-size: 2rem;
-  }
-
-  .contact-box p {
-    opacity: 0.85;
-    margin: 0 0 25px 0;
-    line-height: 1.6;
-  }
-
-  .contact-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--brand-lime);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.15rem;
-    padding: 14px 28px;
-    border: 2px solid var(--brand-lime);
-    border-radius: 30px;
-    transition: all 0.25s ease;
-  }
-
-  .contact-link:hover {
-    background: var(--brand-lime);
-    color: var(--brand-black);
-    transform: translateY(-2px);
-  }
-
   /* ===== АДАПТИВНОСТЬ ===== */
   @media (max-width: 768px) {
     .about-section { padding: 70px 15px; }
     .info-grid { gap: 40px; }
-    .contact-box { padding: 40px 20px; }
-    .contact-link { width: 100%; justify-content: center; }
   }
 </style>
 
@@ -295,19 +247,6 @@
         </ul>
         <p>Такой подход гарантирует мгновенный отклик интерфейса, прозрачность работы и полное соответствие требованиям нормоконтроля.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- 4. Контакты / Обратная связь -->
-  <section class="about-section contact-section">
-    <div class="contact-box">
-      <h2>Связаться с нами</h2>
-      <p>
-        Нашли неточность в расчётах, опечатку или есть идея по улучшению платформы?
-        Мы ценим вашу обратную связь и постоянно работаем над качеством ресурса.
-      </p>
-      <!-- ЗАМЕНИТЕ ССЫЛКУ НА ВАШ РЕАЛЬНЫЙ EMAIL ИЛИ ФОРМУ -->
-      <a href="mailto:student@college.ru" class="contact-link">📧 Написать автору</a>
     </div>
   </section>
 </div>
