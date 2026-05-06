@@ -1,0 +1,146 @@
+/* =========================================
+   ВЕРХНЯЯ НАВИГАЦИОННАЯ ПАНЕЛЬ
+   ========================================= */
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: var(--brand-black);
+  color: var(--brand-clear-white);
+  z-index: 1000;
+  box-shadow: 0 2px 8px var(--black-opacity-20);
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.navbar-logo span {
+  font: var(--font-h550);
+  color: var(--brand-lime);
+}
+
+.navbar-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar-menu li {
+  margin: 0;
+}
+
+.navbar-menu a,
+.navbar-menu button.add-record {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: var(--brand-clear-white);
+  font: var(--font-h300);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: background 0.15s ease, color 0.15s ease;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.navbar-menu a:hover,
+.navbar-menu button.add-record:hover {
+  background: var(--white-opacity-12);
+  color: var(--brand-lime);
+}
+
+.navbar-menu i {
+  width: 18px;
+  text-align: center;
+  color: var(--brand-lime);
+  font-size: 14px;
+}
+
+.navbar-menu button.add-record {
+  background: var(--brand-lime);
+  color: var(--brand-black);
+  font-weight: 600;
+}
+
+.navbar-menu button.add-record:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+/* Основной контент с отступом сверху */
+main {
+  padding-top: 90px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+/* Адаптивность для навигации */
+@media (max-width: 900px) {
+  .navbar-container {
+    padding: 0 15px;
+  }
+
+  .navbar-menu ul {
+    gap: 4px;
+  }
+
+  .navbar-menu a,
+  .navbar-menu button.add-record {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .navbar-menu a span,
+  .navbar-menu button.add-record span {
+    display: none;
+  }
+
+  .navbar-logo span {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-menu ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .navbar-menu li {
+    margin: 2px;
+  }
+
+  .navbar-menu a,
+  .navbar-menu button.add-record {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
