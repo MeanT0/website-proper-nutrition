@@ -30,35 +30,25 @@ def calc(request):
     if request.method == 'POST':
         # Сначала сохраняем все данные из POST, чтобы не потерять их
         # Данные ИМТ
-        if 'bmi_height' in request.POST:
-            form_data['bmi_height'] = request.POST.get('bmi_height')
-        if 'bmi_weight' in request.POST:
-            form_data['bmi_weight'] = request.POST.get('bmi_weight')
+        form_data['bmi_height'] = request.POST.get('bmi_height', '')
+        form_data['bmi_weight'] = request.POST.get('bmi_weight', '')
         
         # Данные TDEE
-        if 'tdee_sex' in request.POST:
-            form_data['tdee_sex'] = request.POST.get('tdee_sex')
-        if 'tdee_age' in request.POST:
-            form_data['tdee_age'] = request.POST.get('tdee_age')
-        if 'tdee_height' in request.POST:
-            form_data['tdee_height'] = request.POST.get('tdee_height')
-        if 'tdee_weight' in request.POST:
-            form_data['tdee_weight'] = request.POST.get('tdee_weight')
-        if 'tdee_activity' in request.POST:
-            form_data['tdee_activity'] = request.POST.get('tdee_activity')
+        form_data['tdee_sex'] = request.POST.get('tdee_sex', '')
+        form_data['tdee_age'] = request.POST.get('tdee_age', '')
+        form_data['tdee_height'] = request.POST.get('tdee_height', '')
+        form_data['tdee_weight'] = request.POST.get('tdee_weight', '')
+        form_data['tdee_activity'] = request.POST.get('tdee_activity', '')
         
         # Данные БЖУ
-        if 'bju_weight' in request.POST:
-            form_data['bju_weight'] = request.POST.get('bju_weight')
-        if 'bju_calories' in request.POST:
-            form_data['bju_calories'] = request.POST.get('bju_calories')
-        if 'bju_goal' in request.POST:
-            form_data['bju_goal'] = request.POST.get('bju_goal')
+        form_data['bju_weight'] = request.POST.get('bju_weight', '')
+        form_data['bju_calories'] = request.POST.get('bju_calories', '')
+        form_data['bju_goal'] = request.POST.get('bju_goal', '')
 
         # Калькулятор ИМТ
         if 'calc_bmi' in request.POST:
-            height = float(request.POST.get('bmi_height', 0))
-            weight = float(request.POST.get('bmi_weight', 0))
+            height = float(form_data['bmi_height'] or 0)
+            weight = float(form_data['bmi_weight'] or 0)
 
             if height > 0 and weight > 0:
                 height_m = height / 100
@@ -85,11 +75,11 @@ def calc(request):
 
         # Калькулятор калорий (TDEE)
         elif 'calc_tdee' in request.POST:
-            sex = request.POST.get('tdee_sex', 'male')
-            age = float(request.POST.get('tdee_age', 0))
-            height = float(request.POST.get('tdee_height', 0))
-            weight = float(request.POST.get('tdee_weight', 0))
-            activity = float(request.POST.get('tdee_activity', 1.2))
+            sex = form_data['tdee_sex'] or 'male'
+            age = float(form_data['tdee_age'] or 0)
+            height = float(form_data['tdee_height'] or 0)
+            weight = float(form_data['tdee_weight'] or 0)
+            activity = float(form_data['tdee_activity'] or 1.2)
 
             if age > 0 and height > 0 and weight > 0:
                 # Формула Миффлина-Сан Жеора
@@ -109,9 +99,9 @@ def calc(request):
 
         # Калькулятор БЖУ
         elif 'calc_bju' in request.POST:
-            weight = float(request.POST.get('bju_weight', 0))
-            calories = float(request.POST.get('bju_calories', 0))
-            goal = request.POST.get('bju_goal', 'balance')
+            weight = float(form_data['bju_weight'] or 0)
+            calories = float(form_data['bju_calories'] or 0)
+            goal = form_data['bju_goal'] or 'balance'
 
             if weight > 0 and calories > 0:
                 # На основе данных из документа (г/кг веса тела)
