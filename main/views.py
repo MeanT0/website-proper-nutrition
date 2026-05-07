@@ -45,108 +45,104 @@ def calc(request):
         form_data['bju_calories'] = request.POST.get('bju_calories', '')
         form_data['bju_goal'] = request.POST.get('bju_goal', '')
 
-        # Калькулятор ИМТ
-        if 'calc_bmi' in request.POST:
-            height = float(form_data['bmi_height'] or 0)
-            weight = float(form_data['bmi_weight'] or 0)
+        # Калькулятор ИМТ - считаем если есть данные
+        height = float(form_data['bmi_height'] or 0)
+        weight_bmi = float(form_data['bmi_weight'] or 0)
+        if height > 0 and weight_bmi > 0:
+            height_m = height / 100
+            bmi = weight_bmi / (height_m ** 2)
 
-            if height > 0 and weight > 0:
-                height_m = height / 100
-                bmi = weight / (height_m ** 2)
+            if bmi < 18.5:
+                category = "Дефицит массы"
+                category_class = "underweight"
+            elif bmi < 25:
+                category = "Норма"
+                category_class = "normal"
+            elif bmi < 30:
+                category = "Избыток"
+                category_class = "overweight"
+            else:
+                category = "Ожирение"
+                category_class = "obese"
 
-                if bmi < 18.5:
-                    category = "Дефицит массы"
-                    category_class = "underweight"
-                elif bmi < 25:
-                    category = "Норма"
-                    category_class = "normal"
-                elif bmi < 30:
-                    category = "Избыток"
-                    category_class = "overweight"
-                else:
-                    category = "Ожирение"
-                    category_class = "obese"
+            bmi_result = {
+                'value': f"{bmi:.1f}",
+                'category': category,
+                'category_class': category_class
+            }
 
-                bmi_result = {
-                    'value': f"{bmi:.1f}",
-                    'category': category,
-                    'category_class': category_class
-                }
+        # Калькулятор калорий (TDEE) - считаем если есть данные
+        sex = form_data['tdee_sex'] or 'male'
+        age = float(form_data['tdee_age'] or 0)
+        height_tdee = float(form_data['tdee_height'] or 0)
+        weight_tdee = float(form_data['tdee_weight'] or 0)
+        activity = float(form_data['tdee_activity'] or 0)
 
-        # Калькулятор калорий (TDEE)
-        elif 'calc_tdee' in request.POST:
-            sex = form_data['tdee_sex'] or 'male'
-            age = float(form_data['tdee_age'] or 0)
-            height = float(form_data['tdee_height'] or 0)
-            weight = float(form_data['tdee_weight'] or 0)
-            activity = float(form_data['tdee_activity'] or 1.2)
+        if age > 0 and height_tdee > 0 and weight_tdee > 0 and activity > 0:
+            # Формула Миффлина-Сан Жеора
+            if sex == 'male':
+                bmr = (10 * weight_tdee) + (6.25 * height_tdee) - (5 * age) + 5
+            else:
+                bmr = (10 * weight_tdee) + (6.25 * height_tdee) - (5 * age) - 161
 
-            if age > 0 and height > 0 and weight > 0:
-                # Формула Миффлина-Сан Жеора
-                if sex == 'male':
-                    bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
-                else:
-                    bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
+            tdee = bmr * activity
 
-                tdee = bmr * activity
+            tdee_result = {
+                'calories': f"{int(tdee)}",
+                'lose': f"{int(tdee * 0.8)}",
+                'maintain': f"{int(tdee)}",
+                'gain': f"{int(tdee * 1.15)}"
+            }
 
-                tdee_result = {
-                    'calories': f"{int(tdee)}",
-                    'lose': f"{int(tdee * 0.8)}",
-                    'maintain': f"{int(tdee)}",
-                    'gain': f"{int(tdee * 1.15)}"
-                }
+        # Калькулятор БЖУ - считаем если есть данные
+        weight_bju = float(form_data['bju_weight'] or 0)
+        calories = float(form_data['bju_calories'] or 0)
+        goal = form_data['bju_goal'] or ''
 
-        # Калькулятор БЖУ
-        elif 'calc_bju' in request.POST:
-            weight = float(form_data['bju_weight'] or 0)
-            calories = float(form_data['bju_calories'] or 0)
-            goal = form_data['bju_goal'] or 'balance'
+        if weight_bju > 0 and calories > 0 and goal:
+            # На основе данных из документа (г/кг веса тела)
+            if goal == 'lose':
+                protein_g_per_kg = 2.0
+                fat_g_per_kg = 0.8
+            elif goal == 'gain':
+                protein_g_per_kg = 2.0
+                fat_g_per_kg = 1.0
+            else:
+                protein_g_per_kg = 1.6
+                fat_g_per_kg = 1.0
 
-            if weight > 0 and calories > 0:
-                # На основе данных из документа (г/кг веса тела)
-                if goal == 'lose':
-                    protein_g_per_kg = 2.0
-                    fat_g_per_kg = 0.8
-                elif goal == 'gain':
-                    protein_g_per_kg = 2.0
-                    fat_g_per_kg = 1.0
-                else:
-                    protein_g_per_kg = 1.6
-                    fat_g_per_kg = 1.0
+            # Рассчитываем белки и жиры в граммах
+            protein_grams = int(weight_bju * protein_g_per_kg)
+            fat_grams = int(weight_bju * fat_g_per_kg)
 
-                # Рассчитываем белки и жиры в граммах
-                protein_grams = int(weight * protein_g_per_kg)
-                fat_grams = int(weight * fat_g_per_kg)
+            # Калории от белков и жиров
+            protein_cal = protein_grams * 4
+            fat_cal = fat_grams * 9
 
-                # Калории от белков и жиров
-                protein_cal = protein_grams * 4
-                fat_cal = fat_grams * 9
+            # Углеводы забирают остаток калорий
+            remaining_calories = calories - (protein_cal + fat_cal)
+            if remaining_calories > 0:
+                carbs_grams = int(remaining_calories / 4)
+            else:
+                carbs_grams = 0
 
-                # Углеводы забирают остаток калорий
-                remaining_calories = calories - (protein_cal + fat_cal)
-                if remaining_calories > 0:
-                    carbs_grams = int(remaining_calories / 4)
-                else:
-                    carbs_grams = 0
+            # Проверяем соответствие процентам
+            protein_percent = (protein_cal / calories) * 100
+            fat_percent = (fat_cal / calories) * 100
+            carbs_percent = (carbs_grams * 4 / calories) * 100
 
-                # Проверяем соответствие процентам
-                protein_percent = (protein_cal / calories) * 100
-                fat_percent = (fat_cal / calories) * 100
-                carbs_percent = (carbs_grams * 4 / calories) * 100
-
-                bju_result = {
-                    'protein_grams': protein_grams,
-                    'protein_cal': protein_cal,
-                    'protein_percent': protein_percent,
-                    'fat_grams': fat_grams,
-                    'fat_cal': fat_cal,
-                    'fat_percent': fat_percent,
-                    'carbs_grams': carbs_grams,
-                    'carbs_cal': carbs_grams * 4,
-                    'carbs_percent': carbs_percent,
-                    'total_cal': calories
-                }
+            bju_result = {
+                'protein_grams': protein_grams,
+                'protein_cal': protein_cal,
+                'protein_percent': protein_percent,
+                'fat_grams': fat_grams,
+                'fat_cal': fat_cal,
+                'fat_percent': fat_percent,
+                'carbs_grams': carbs_grams,
+                'carbs_cal': carbs_grams * 4,
+                'carbs_percent': carbs_percent,
+                'total_cal': calories
+            }
 
     context = {
         'title': 'Калькуляторы питания',
