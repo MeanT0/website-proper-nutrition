@@ -24,10 +24,37 @@ def calc(request):
     tdee_result = None
     bju_result = None
 
-    # Сохраняем введённые значения
+    # Сохраняем введённые значения для всех калькуляторов
     form_data = {}
 
     if request.method == 'POST':
+        # Сначала сохраняем все данные из POST, чтобы не потерять их
+        # Данные ИМТ
+        if 'bmi_height' in request.POST:
+            form_data['bmi_height'] = request.POST.get('bmi_height')
+        if 'bmi_weight' in request.POST:
+            form_data['bmi_weight'] = request.POST.get('bmi_weight')
+        
+        # Данные TDEE
+        if 'tdee_sex' in request.POST:
+            form_data['tdee_sex'] = request.POST.get('tdee_sex')
+        if 'tdee_age' in request.POST:
+            form_data['tdee_age'] = request.POST.get('tdee_age')
+        if 'tdee_height' in request.POST:
+            form_data['tdee_height'] = request.POST.get('tdee_height')
+        if 'tdee_weight' in request.POST:
+            form_data['tdee_weight'] = request.POST.get('tdee_weight')
+        if 'tdee_activity' in request.POST:
+            form_data['tdee_activity'] = request.POST.get('tdee_activity')
+        
+        # Данные БЖУ
+        if 'bju_weight' in request.POST:
+            form_data['bju_weight'] = request.POST.get('bju_weight')
+        if 'bju_calories' in request.POST:
+            form_data['bju_calories'] = request.POST.get('bju_calories')
+        if 'bju_goal' in request.POST:
+            form_data['bju_goal'] = request.POST.get('bju_goal')
+
         # Калькулятор ИМТ
         if 'calc_bmi' in request.POST:
             height = float(request.POST.get('bmi_height', 0))
@@ -56,9 +83,6 @@ def calc(request):
                     'category_class': category_class
                 }
 
-                form_data['bmi_height'] = request.POST.get('bmi_height')
-                form_data['bmi_weight'] = request.POST.get('bmi_weight')
-
         # Калькулятор калорий (TDEE)
         elif 'calc_tdee' in request.POST:
             sex = request.POST.get('tdee_sex', 'male')
@@ -82,12 +106,6 @@ def calc(request):
                     'maintain': f"{int(tdee)}",
                     'gain': f"{int(tdee * 1.15)}"
                 }
-
-                form_data['tdee_sex'] = sex
-                form_data['tdee_age'] = request.POST.get('tdee_age')
-                form_data['tdee_height'] = request.POST.get('tdee_height')
-                form_data['tdee_weight'] = request.POST.get('tdee_weight')
-                form_data['tdee_activity'] = request.POST.get('tdee_activity')
 
         # Калькулятор БЖУ
         elif 'calc_bju' in request.POST:
@@ -139,10 +157,6 @@ def calc(request):
                     'carbs_percent': carbs_percent,
                     'total_cal': calories
                 }
-
-                form_data['bju_weight'] = request.POST.get('bju_weight')
-                form_data['bju_calories'] = request.POST.get('bju_calories')
-                form_data['bju_goal'] = goal
 
     context = {
         'title': 'Калькуляторы питания',
