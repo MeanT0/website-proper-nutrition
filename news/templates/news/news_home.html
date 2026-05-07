@@ -2,22 +2,123 @@
 
 {% block title %}Новости{% endblock %}
 
-
 {% block content %}
-<div class="features" xmlns="http://www.w3.org/1999/html">
-        <h1>Новостная лента</h1>
-        {% if news %}
-            {% for n in news %}
-            <div class="news-card">
-                <h3 class="news-card__title">{{ n.title }}</h3>
-                <p class="news-card__text">{{ n.anons }}</p>
-                <div class="news-card__date">{{ n.date }}</div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <p>На сайте в текущий момент отсутствуют записи</p>
-        {% endif %}
+<style>
+  .news-page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
 
-        {# Комментарий #}
+  .news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .news-header h1 {
+    font: var(--font-h700);
+    color: var(--brand-black);
+    margin: 0;
+  }
+
+  .add-news-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--brand-lime);
+    color: var(--brand-black);
+    text-decoration: none;
+    border-radius: var(--radius-full);
+    font: var(--font-h350);
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(199, 240, 0, 0.4);
+  }
+
+  .add-news-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(199, 240, 0, 0.6);
+    filter: brightness(0.95);
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .news-card {
+    background: var(--background-primary-elevated);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: 0 2px 8px var(--black-opacity-8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px var(--black-opacity-20);
+  }
+
+  .news-card__title {
+    font: var(--font-h550);
+    color: var(--brand-black);
+    margin: 0 0 12px 0;
+  }
+
+  .news-card__text {
+    font: var(--font-p200);
+    color: var(--brand-black);
+    opacity: 0.8;
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+  }
+
+  .news-card__date {
+    font: var(--font-p100);
+    color: var(--brand-violet);
+    font-weight: 600;
+  }
+
+  .no-news {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--background-primary-elevated);
+    border-radius: var(--radius-lg);
+    color: var(--brand-black);
+    opacity: 0.6;
+    font: var(--font-p200);
+  }
+</style>
+
+<div class="news-page-container">
+  <div class="news-header">
+    <h1>Новостная лента</h1>
+    <a href="{% url 'create' %}" class="add-news-btn">
+      <i class="fas fa-plus-circle"></i>
+      <span>Добавить новость</span>
+    </a>
+  </div>
+
+  {% if news %}
+    <div class="news-grid">
+      {% for n in news %}
+        <div class="news-card">
+          <h3 class="news-card__title">{{ n.title }}</h3>
+          <p class="news-card__text">{{ n.anons }}</p>
+          <div class="news-card__date">{{ n.date|date:"d.m.Y H:i" }}</div>
+        </div>
+      {% endfor %}
     </div>
+  {% else %}
+    <div class="no-news">
+      <p>На сайте в текущий момент отсутствуют новости</p>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}
