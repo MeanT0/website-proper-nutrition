@@ -22,6 +22,7 @@
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
+    align-items: start; /* Важно: предотвращает растягивание карточек по высоте */
 }
 
 @media (max-width: 768px) {
@@ -37,6 +38,7 @@
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     display: flex;
     flex-direction: column;
+    height: fit-content; /* Карточка занимает только необходимый объем */
 }
 
 .calc-header {
@@ -295,25 +297,24 @@
 
     <div class="calculators-grid">
         <!-- Калькулятор 1: ИМТ -->
-        <div class="calculator-card">
+        <div class="calculator-card" id="card-bmi">
             <div class="calc-header">
                 <h2>📊 ИМТ</h2>
                 <p>Индекс массы тела</p>
             </div>
 
-            <form method="POST" class="calc-form">
+            <form method="post" class="calc-form">
                 {% csrf_token %}
-
                 <div class="input-group">
                     <label class="input-label">Рост (см)</label>
-                    <input type="number" name="bmi_height" value="{{ bmi_height|default:'' }}"
-                           placeholder="170" min="50" max="250" required class="calc-input">
+                    <input type="number" id="bmi_height" name="bmi_height"
+                           placeholder="170" min="50" max="250" value="{{ bmi_height|default:'' }}" class="calc-input">
                 </div>
 
                 <div class="input-group">
                     <label class="input-label">Вес (кг)</label>
-                    <input type="number" name="bmi_weight" value="{{ bmi_weight|default:'' }}"
-                           placeholder="70" min="20" max="300" step="0.1" required class="calc-input">
+                    <input type="number" id="bmi_weight" name="bmi_weight"
+                           placeholder="70" min="20" max="300" step="0.1" value="{{ bmi_weight|default:'' }}" class="calc-input">
                 </div>
 
                 <button type="submit" name="calc_bmi" class="calc-button">
@@ -325,27 +326,24 @@
             {% if bmi_result %}
             <div class="calc-result">
                 <div class="result-value">{{ bmi_result.value }}</div>
-                <div class="result-category {{ bmi_result.category_class }}">
-                    {{ bmi_result.category }}
-                </div>
+                <div class="result-category {{ bmi_result.category_class }}">{{ bmi_result.category }}</div>
                 <div class="result-info">Норма: 18.5 - 24.9</div>
             </div>
             {% endif %}
         </div>
 
         <!-- Калькулятор 2: Калории (TDEE) -->
-        <div class="calculator-card">
+        <div class="calculator-card" id="card-tdee">
             <div class="calc-header">
                 <h2>🔥 Калории</h2>
                 <p>Суточная норма</p>
             </div>
 
-            <form method="POST" class="calc-form">
+            <form method="post" class="calc-form">
                 {% csrf_token %}
-
                 <div class="input-group">
                     <label class="input-label">Пол</label>
-                    <select name="tdee_sex" required class="calc-select">
+                    <select id="tdee_sex" name="tdee_sex" class="calc-select">
                         <option value="male" {% if tdee_sex == 'male' %}selected{% endif %}>👨 Мужской</option>
                         <option value="female" {% if tdee_sex == 'female' %}selected{% endif %}>👩 Женский</option>
                     </select>
@@ -354,26 +352,26 @@
                 <div class="input-row">
                     <div class="input-group">
                         <label class="input-label">Возраст</label>
-                        <input type="number" name="tdee_age" value="{{ tdee_age|default:'' }}"
-                               placeholder="25" min="10" max="100" required class="calc-input">
+                        <input type="number" id="tdee_age" name="tdee_age"
+                               placeholder="25" min="10" max="100" value="{{ tdee_age|default:'' }}" class="calc-input">
                     </div>
 
                     <div class="input-group">
                         <label class="input-label">Рост (см)</label>
-                        <input type="number" name="tdee_height" value="{{ tdee_height|default:'' }}"
-                               placeholder="170" min="100" max="250" required class="calc-input">
+                        <input type="number" id="tdee_height" name="tdee_height"
+                               placeholder="170" min="100" max="250" value="{{ tdee_height|default:'' }}" class="calc-input">
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label class="input-label">Вес (кг)</label>
-                    <input type="number" name="tdee_weight" value="{{ tdee_weight|default:'' }}"
-                           placeholder="70" min="30" max="200" step="0.1" required class="calc-input">
+                    <input type="number" id="tdee_weight" name="tdee_weight"
+                           placeholder="70" min="30" max="200" step="0.1" value="{{ tdee_weight|default:'' }}" class="calc-input">
                 </div>
 
                 <div class="input-group">
                     <label class="input-label">Активность</label>
-                    <select name="tdee_activity" required class="calc-select">
+                    <select id="tdee_activity" name="tdee_activity" class="calc-select">
                         <option value="1.2" {% if tdee_activity == '1.2' %}selected{% endif %}>🪑 Сидячий</option>
                         <option value="1.375" {% if tdee_activity == '1.375' %}selected{% endif %}>🚶 Лёгкая</option>
                         <option value="1.55" {% if tdee_activity == '1.55' %}selected{% endif %}>🏃 Средняя</option>
@@ -402,24 +400,24 @@
         </div>
 
         <!-- Калькулятор 3: БЖУ -->
-        <div class="calculator-card">
+        <div class="calculator-card" id="card-bju">
             <div class="calc-header">
                 <h2>🥗 БЖУ</h2>
                 <p>Белки, жиры, углеводы</p>
             </div>
 
-            <form method="POST" class="calc-form">
+            <form method="post" class="calc-form">
                 {% csrf_token %}
-
                 <div class="input-group">
                     <label class="input-label">Калории в день</label>
-                    <input type="number" name="bju_calories" value="{{ bju_calories|default:'' }}"
-                           placeholder="2000" min="800" max="5000" required class="calc-input">
+                    <input type="number" id="bju_calories" name="bju_calories"
+                           placeholder="2000" min="800" max="5000" value="{{ bju_calories|default:'' }}" class="calc-input">
                 </div>
 
                 <div class="input-group">
                     <label class="input-label">Цель</label>
-                    <select name="bju_goal" required class="calc-select">
+                    <select id="bju_goal" name="bju_goal" class="calc-select">
+                        <option value="" disabled {% if not bju_goal %}selected{% endif %}>Выберите цель</option>
                         <option value="balance" {% if bju_goal == 'balance' %}selected{% endif %}>⚖️ Баланс</option>
                         <option value="lose" {% if bju_goal == 'lose' %}selected{% endif %}>📉 Похудение</option>
                         <option value="gain" {% if bju_goal == 'gain' %}selected{% endif %}>📈 Набор массы</option>
@@ -427,15 +425,13 @@
                 </div>
                 <div class="input-group">
                     <label class="input-label">Твой вес (кг)</label>
-                    <input type="number" name="bju_weight" value="{{ bju_weight|default:'' }}"
-                        placeholder="70" min="30" max="200" step="0.1" required class="calc-input">
+                    <input type="number" id="bju_weight" name="bju_weight"
+                        placeholder="70" min="30" max="200" step="0.1" value="{{ bju_weight|default:'' }}" class="calc-input">
                 </div>
                 <button type="submit" name="calc_bju" class="calc-button">
                     <span>Рассчитать</span>
                     <span class="btn-icon">=</span>
                 </button>
-
-
             </form>
 
             {% if bju_result %}
@@ -461,7 +457,6 @@
                         <div class="bju-label">Углеводы ({{ bju_result.carbs_percent|floatformat:0 }}%)</div>
                         <div class="bju-cal">{{ bju_result.carbs_cal }} ккал</div>
                     </div>
-
                 </div>
             </div>
             {% endif %}
