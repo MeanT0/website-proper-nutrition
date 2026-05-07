@@ -8,8 +8,8 @@
     margin: 0 auto;
     padding: 0;
   }
-
-  /* ===== ПОЛНОЭКРАННЫЕ СЕКЦИИ (Исправлено) ===== */
+  
+  /* ===== ПОЛНОЭКРАННЫЕ СЕКЦИИ ===== */
   .fullscreen-section {
     min-height: 100vh;
     width: 100vw;
@@ -18,50 +18,37 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden; /* ВАЖНО: обрезаем всё лишнее */
+    overflow: hidden;
     z-index: 1;
-}
+  }
 
-/* Слой с фоном (вместо background-attachment: fixed) */
   .fullscreen-section::before {
     content: '';
     filter: blur(8px);
     position: absolute;
-    /* Запас по краям, чтобы не было белых полос при прокрутке */
     top: -50px; left: -50px; right: -50px; bottom: -50px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
-}
+  }
 
-/* Затемняющая вуаль */
   .fullscreen-section::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0, 0, 0, 0.65);
     z-index: -1;
-}
+  }
 
-/* Привязка картинок к конкретным секциям */
   .hero-section::before {
     background-image: url('static/main/img/food_back.jpg');
-}
+  }
 
-/* Белая секция (без картинки) */
-  .features-section {
-    background: rgb(156, 156, 156); !important
-    min-height: auto;
-    align-items: center;
-    padding: 100px 40px;
-    z-index: 2; /* Поверх фонов */
-}
-
-  .features-section::before,
-  .features-section::after {
-    display: none; /* Убираем фон и вуаль у белой секции */
-}
+  /* ===== HERO СЕКЦИЯ ===== */
+  .hero-section {
+    position: relative;
+  }
 
   .section-content {
     position: relative;
@@ -99,42 +86,32 @@
     color: var(--brand-clear-white);
   }
 
-  /* ===== HERO СЕКЦИЯ ===== */
-  .hero-section {
-    background-image: url('static/main/img/food_back.jpeg');
-    position: relative;
-  }
-
-  /* ===== СЕКЦИЯ ПРЕИМУЩЕСТВ (Белая) ===== */
+  /* ===== СЕКЦИЯ ПРЕИМУЩЕСТВ ===== */
   .features-section {
     min-height: auto;
     padding: 100px 40px;
+    background: rgb(156, 156, 156);
   }
 
-  .features-section::before {
-    display: none; /* Убираем затемнение для белой секции */
+  .features-section::before,
+  .features-section::after {
+    display: none;
   }
 
   .features-grid {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 0px;
+    width: 100%;
   }
 
   .feature-card {
     background: #c6c6c6;
-
-
     padding: 40px 30px;
-
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
-  }
-
-  .feature-card:hover {
-
   }
 
   .feature-icon {
@@ -160,30 +137,34 @@
 
   /* ===== СЕКЦИЯ "КАК ЭТО РАБОТАЕТ" ===== */
   .how-it-works-section {
-    background-image: url('static/main/img/marathon.jpg');
+    background: transparent;
+    min-height: auto;
+    padding: 100px 40px;
+  }
+
+  .how-it-works-section::before,
+  .how-it-works-section::after {
+    display: none;
   }
 
   .steps-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0px;
+    width: 100%;
   }
 
   .step-item {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #c6c6c6;
+    padding: 40px 30px;
+    text-align: center;
     transition: transform 0.3s ease;
   }
 
   .step-item:hover {
-    transform: translateX(10px);
-    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
   }
 
   .step-number {
@@ -197,25 +178,27 @@
     justify-content: center;
     font-size: 24px;
     font-weight: 800;
-    flex-shrink: 0;
+    margin: 0 auto 20px auto;
   }
 
   .step-content h3 {
     font: var(--font-h300);
-    color: var(--brand-clear-white);
+    color: var(--brand-black);
     margin: 0 0 8px 0;
     font-size: 1.3rem;
   }
 
   .step-content p {
     font: var(--font-p200);
-    color: var(--brand-clear-white);
+    color: rgb(45, 45, 45);
     opacity: 0.8;
     margin: 0;
     line-height: 1.5;
   }
 
-
+  /* ===== CTA СЕКЦИЯ ===== */
+  .cta-section::before {
+    background-image: url('static/main/img/food_back.jpg');
   }
 
   /* ===== КНОПКИ ===== */
@@ -241,18 +224,6 @@
     filter: brightness(0.95);
   }
 
-  .btn-secondary {
-    background: transparent;
-    border: 2px solid var(--brand-lime);
-    color: var(--brand-lime);
-    box-shadow: none;
-  }
-
-  .btn-secondary:hover {
-    background: var(--brand-lime);
-    color: var(--brand-black);
-  }
-
   /* ===== ДИСКЛЕЙМЕР ===== */
   .disclaimer {
     text-align: center;
@@ -268,17 +239,17 @@
   /* ===== АДАПТИВНОСТЬ ===== */
   @media (max-width: 768px) {
     .fullscreen-section {
-      background-attachment: scroll; /* Отключаем фикс на мобильных */
+      background-attachment: scroll;
       padding: 60px 20px;
     }
 
-    .step-item {
-      flex-direction: column;
-      text-align: center;
+    .features-grid,
+    .steps-container {
+      grid-template-columns: 1fr;
     }
 
-    .features-grid {
-      grid-template-columns: 1fr;
+    .step-item {
+      margin-bottom: 20px;
     }
   }
 
@@ -289,23 +260,30 @@
     right: 0;
     text-align: center;
     z-index: 9;
+    cursor: pointer;
   }
 
   .t-cover__arrow-wrapper {
     cursor: pointer;
     display: inline-block;
     transition: all .2s ease-in-out;
-    }
+  }
 
   .t-cover__arrow-wrapper_animated {
     -webkit-animation: t-arrow-bottom 1.7s ease infinite;
     animation: t-arrow-bottom 1.7s ease infinite;
-    }
+  }
+
+  @keyframes t-arrow-bottom {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+    100% { transform: translateY(0); }
+  }
 </style>
 
 <div class="landing-container">
   <!-- HERO СЕКЦИЯ -->
-  <section class="fullscreen-section hero-section">
+  <section class="fullscreen-section hero-section" id="hero">
     <div class="section-content">
       <h1 class="section-title">Питайся правильно.<br>Без сложных диет.</h1>
       <p class="section-subtitle">
@@ -313,10 +291,21 @@
         Без регистрации и сбора данных.
       </p>
     </div>
+    <div class="t-cover__arrow" id="scrollArrow">
+      <div class="t-cover__arrow-wrapper t-cover__arrow-wrapper_animated">
+        <div class="t-cover__arrow_mobile">
+          <svg role="presentation" class="t-cover__arrow-svg" style="fill:#ffffff;" x="0px" y="0px" width="38.417px" height="18.592px" viewBox="0 0 38.417 18.592">
+            <g>
+              <path d="M19.208,18.592c-0.241,0-0.483-0.087-0.673-0.261L0.327,1.74c-0.408-0.372-0.438-1.004-0.066-1.413c0.372-0.409,1.004-0.439,1.413-0.066L19.208,16.24L36.743,0.261c0.411-0.372,1.042-0.342,1.413,0.066c0.372,0.408,0.343,1.041-0.065,1.413L19.881,18.332C19.691,18.505,19.449,18.592,19.208,18.592z"></path>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
   </section>
-
-  <!-- СЕКЦИЯ ПРЕИМУЩЕСТВ (Белая) -->
-  <section class="fullscreen-section features-section">
+  
+  <!-- СЕКЦИЯ ПРЕИМУЩЕСТВ -->
+  <section class="fullscreen-section features-section" id="features">
     <div class="features-grid">
       <div class="feature-card">
         <span class="feature-icon">🧮</span>
@@ -348,41 +337,36 @@
   </section>
 
   <!-- СЕКЦИЯ "КАК ЭТО РАБОТАЕТ" -->
-  <section class="fullscreen-section how-it-works-section">
-    <div class="section-content">
-      <h2 class="section-title">Как это работает</h2>
-      <p class="section-subtitle">Три простых шага к осознанному питанию</p>
-
-      <div class="steps-container">
-        <div class="step-item">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>Введите свои данные</h3>
-            <p>Укажите рост, вес, возраст, пол и уровень физической активности. Это займёт меньше минуты.</p>
-          </div>
+  <section class="fullscreen-section how-it-works-section" id="howItWorks">
+    <div class="steps-container">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Введите свои данные</h3>
+          <p>Укажите рост, вес, возраст, пол и уровень физической активности. Это займёт меньше минуты.</p>
         </div>
+      </div>
 
-        <div class="step-item">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>Получите персональный расчёт</h3>
-            <p>Система автоматически рассчитает вашу норму калорий, оптимальное соотношение белков, жиров и углеводов.</p>
-          </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Получите персональный расчёт</h3>
+          <p>Система автоматически рассчитает вашу норму калорий, оптимальное соотношение белков, жиров и углеводов.</p>
         </div>
+      </div>
 
-        <div class="step-item">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>Применяйте на практике</h3>
-            <p>Используйте полученные данные для планирования рациона. Изучайте материалы и формируйте полезные привычки.</p>
-          </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Применяйте на практике</h3>
+          <p>Используйте полученные данные для планирования рациона. Изучайте материалы и формируйте полезные привычки.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA СЕКЦИЯ -->
-  <section class="fullscreen-section cta-section">
+  <section class="fullscreen-section cta-section" id="cta">
     <div class="section-content">
       <h2 class="section-title">Готовы изменить подход к питанию?</h2>
       <p class="section-subtitle">
@@ -402,13 +386,17 @@
   </div>
 </div>
 
-<div class="t-cover__arrow"><div class="t-cover__arrow-wrapper t-cover__arrow-wrapper_animated">
-  <div class="t-cover__arrow_mobile">
-    <svg role="presentation" class="t-cover__arrow-svg" style="fill:#ffffff;" x="0px" y="0px" width="38.417px" height="18.592px" viewBox="0 0 38.417 18.592">
-      <g>
-        <path d="M19.208,18.592c-0.241,0-0.483-0.087-0.673-0.261L0.327,1.74c-0.408-0.372-0.438-1.004-0.066-1.413c0.372-0.409,1.004-0.439,1.413-0.066L19.208,16.24L36.743,0.261c0.411-0.372,1.042-0.342,1.413,0.066c0.372,0.408,0.343,1.041-0.065,1.413L19.881,18.332C19.691,18.505,19.449,18.592,19.208,18.592z"></path>
-      </g>
-    </svg>
-  </div>
-</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const scrollArrow = document.getElementById('scrollArrow');
+    const heroSection = document.getElementById('hero');
+    const featuresSection = document.getElementById('features');
+    
+    if (scrollArrow && featuresSection) {
+      scrollArrow.addEventListener('click', function() {
+        featuresSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  });
+</script>
 {% endblock %}

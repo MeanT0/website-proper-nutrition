@@ -55,7 +55,7 @@
 }
 
 .navbar-menu a,
-.navbar-menu button.add-record {
+.navbar-menu a.add-record {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -71,7 +71,7 @@
 }
 
 .navbar-menu a:hover,
-.navbar-menu button.add-record:hover {
+.navbar-menu a.add-record:hover {
   background: var(--white-opacity-12);
   color: var(--brand-lime);
 }
@@ -83,15 +83,15 @@
   font-size: 14px;
 }
 
-.navbar-menu button.add-record {
-  background: var(--brand-lime);
-  color: var(--brand-black);
+.navbar-menu a.add-record {
+  background: transparent;
+  color: var(--brand-lime);
   font-weight: 600;
 }
 
-.navbar-menu button.add-record:hover {
-  filter: brightness(0.95);
-  transform: translateY(-1px);
+.navbar-menu a.add-record:hover {
+  background: var(--brand-lime);
+  color: var(--brand-black);
 }
 
 /* Основной контент с отступом сверху */
