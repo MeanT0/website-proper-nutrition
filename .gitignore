@@ -1,11 +1,1 @@
-```
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Directories
-.gitignore
-main/__pycache__/
-```
+Nothing should be ignored in this case, as the only change is a modification to a source file (`main/templates/main/index.html`) which is not a build artifact, dependency, or temporary file.
