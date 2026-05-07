@@ -1,10 +1,131 @@
 {% extends 'main/layout.html' %}
 
-{% block title %}Форма{% endblock %}
+{% block title %}Добавить новость{% endblock %}
 
 {% block content %}
-<div class="features" xmlns="http://www.w3.org/1999/html">
-        <h1>Форма для добавления записи</h1>
+<style>
+  .create-page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
 
-    </div>
+  .create-form-card {
+    background: var(--background-primary-elevated);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: 0 2px 8px var(--black-opacity-8);
+  }
+
+  .create-form-card h1 {
+    font: var(--font-h550);
+    color: var(--brand-black);
+    margin: 0 0 30px 0;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-group label {
+    display: block;
+    font: var(--font-h300);
+    color: var(--brand-black);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--background-primary-elevated);
+    border: 1.5px solid var(--brand-gray);
+    border-radius: var(--radius-md);
+    font: var(--font-p200);
+    color: var(--brand-black);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(30, 30, 30, 0.4);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--brand-violet);
+    box-shadow: 0 0 0 3px rgba(74,72,233,0.15);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+    font-family: inherit;
+  }
+
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    background: var(--brand-lime);
+    color: var(--brand-black);
+    border: none;
+    border-radius: var(--radius-full);
+    font: var(--font-h350);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(199, 240, 0, 0.4);
+    width: 100%;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(199, 240, 0, 0.6);
+    filter: brightness(0.95);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--brand-violet);
+    font: var(--font-h300);
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="create-page-container">
+  <div class="create-form-card">
+    <h1>Добавить новость</h1>
+    <form method="post" action="{% url 'create' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_title">Заголовок</label>
+        <input type="text" id="id_title" name="title" placeholder="Введите заголовок новости" required>
+      </div>
+      <div class="form-group">
+        <label for="id_anons">Анонс</label>
+        <input type="text" id="id_anons" name="anons" placeholder="Краткое описание новости" required>
+      </div>
+      <div class="form-group">
+        <label for="id_full_text">Полный текст</label>
+        <textarea id="id_full_text" name="full_text" placeholder="Введите полный текст новости" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="id_date">Дата публикации</label>
+        <input type="datetime-local" id="id_date" name="date" required>
+      </div>
+      <button type="submit" class="submit-btn">Опубликовать</button>
+    </form>
+    <a href="{% url 'news_home' %}" class="back-link">← Вернуться к новостям</a>
+  </div>
+</div>
 {% endblock %}
