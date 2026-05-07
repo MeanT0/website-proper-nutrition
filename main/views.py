@@ -2,15 +2,6 @@ from django.shortcuts import render
 
 
 def index(request):
-    data = {
-        'title': 'Главная страница',
-        'values': ['Some', 'Hello', '123'],
-        'obj': {
-            'food': 'pizza',
-            'sleep time': 8,
-            'callories': '>2000 per day'
-        }
-    }
     return render(request, 'main/index.html', data)
 
 
@@ -19,6 +10,8 @@ def about(request):
 
 
 def calc(request):
+
+
     # Результаты
     bmi_result = None
     tdee_result = None
