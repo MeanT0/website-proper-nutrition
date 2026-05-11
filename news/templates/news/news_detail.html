@@ -69,7 +69,7 @@
   </div>
 
   <div class="news-detail-content">
-    {{ news.text|linebreaks }}
+    {{ news.full_text|linebreaks }}
   </div>
 
   <a href="{% url 'news' %}" class="back-btn">
