@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article
 from django.views.generic import ListView
 from datetime import datetime
@@ -7,6 +7,10 @@ from datetime import datetime
 def news_home(request):
     news = Article.objects.order_by('-date') # сортировка по убыванию
     return render(request, 'news/news_home.html', {'news': news})
+
+def news_detail(request, id):
+    news = get_object_or_404(Article, pk=id)
+    return render(request, 'news/news_detail.html', {'news': news})
 # Create your views here.
 
 def create(request):
