@@ -293,13 +293,13 @@
 </style>
 
 <div class="calculators-page">
-    <h1 class="page-title">🧮 Калькуляторы питания</h1>
+    <h1 class="page-title">Калькуляторы питания</h1>
 
     <div class="calculators-grid">
         <!-- Калькулятор 1: ИМТ -->
         <div class="calculator-card" id="card-bmi">
             <div class="calc-header">
-                <h2>📊 ИМТ</h2>
+                <h2>ИМТ</h2>
                 <p>Индекс массы тела</p>
             </div>
 
@@ -335,7 +335,7 @@
         <!-- Калькулятор 2: Калории (TDEE) -->
         <div class="calculator-card" id="card-tdee">
             <div class="calc-header">
-                <h2>🔥 Калории</h2>
+                <h2> Калории</h2>
                 <p>Суточная норма</p>
             </div>
 
@@ -343,9 +343,10 @@
                 {% csrf_token %}
                 <div class="input-group">
                     <label class="input-label">Пол</label>
-                    <select id="tdee_sex" name="tdee_sex" class="calc-select">
-                        <option value="male" {% if tdee_sex == 'male' %}selected{% endif %}>👨 Мужской</option>
-                        <option value="female" {% if tdee_sex == 'female' %}selected{% endif %}>👩 Женский</option>
+                    <select name="tdee_sex" required class="calc-select">
+                        <option value="male" {% if tdee_sex == 'male' %}selected{% endif %}> Мужской</option>
+                        <option value="female" {% if tdee_sex == 'female' %}selected{% endif %}> Женский</option>
+
                     </select>
                 </div>
 
@@ -371,12 +372,12 @@
 
                 <div class="input-group">
                     <label class="input-label">Активность</label>
-                    <select id="tdee_activity" name="tdee_activity" class="calc-select">
-                        <option value="1.2" {% if tdee_activity == '1.2' %}selected{% endif %}>🪑 Сидячий</option>
-                        <option value="1.375" {% if tdee_activity == '1.375' %}selected{% endif %}>🚶 Лёгкая</option>
-                        <option value="1.55" {% if tdee_activity == '1.55' %}selected{% endif %}>🏃 Средняя</option>
-                        <option value="1.725" {% if tdee_activity == '1.725' %}selected{% endif %}>💪 Высокая</option>
-                        <option value="1.9" {% if tdee_activity == '1.9' %}selected{% endif %}>🏋️ Очень высокая</option>
+                    <select name="tdee_activity" required class="calc-select">
+                        <option value="1.2" {% if tdee_activity == '1.2' %}selected{% endif %}> Сидячий</option>
+                        <option value="1.375" {% if tdee_activity == '1.375' %}selected{% endif %}> Лёгкая</option>
+                        <option value="1.55" {% if tdee_activity == '1.55' %}selected{% endif %}> Средняя</option>
+                        <option value="1.725" {% if tdee_activity == '1.725' %}selected{% endif %}> Высокая</option>
+                        <option value="1.9" {% if tdee_activity == '1.9' %}selected{% endif %}> Очень высокая</option>
                     </select>
                 </div>
 
@@ -402,7 +403,7 @@
         <!-- Калькулятор 3: БЖУ -->
         <div class="calculator-card" id="card-bju">
             <div class="calc-header">
-                <h2>🥗 БЖУ</h2>
+                <h2>БЖУ</h2>
                 <p>Белки, жиры, углеводы</p>
             </div>
 
@@ -416,9 +417,9 @@
 
                 <div class="input-group">
                     <label class="input-label">Цель</label>
-                    <select id="bju_goal" name="bju_goal" class="calc-select">
-                        <option value="" disabled {% if not bju_goal %}selected{% endif %}>Выберите цель</option>
-                        <option value="balance" {% if bju_goal == 'balance' %}selected{% endif %}>⚖️ Баланс</option>
+
+                    <select name="bju_goal" required class="calc-select">
+                        <option value="balance" {% if bju_goal == 'balance' %}selected{% endif %}>Баланс</option>
                         <option value="lose" {% if bju_goal == 'lose' %}selected{% endif %}>📉 Похудение</option>
                         <option value="gain" {% if bju_goal == 'gain' %}selected{% endif %}>📈 Набор массы</option>
                     </select>
