@@ -16,7 +16,6 @@ def news_detail(request, id):
 def create(request):
     if request.method == 'POST':
         title = request.POST.get('title')
-        anons = request.POST.get('anons')
         full_text = request.POST.get('full_text')
         date_str = request.POST.get('date')
         
@@ -28,7 +27,6 @@ def create(request):
         
         article = Article(
             title=title,
-            anons=anons,
             full_text=full_text,
             date=date
         )
