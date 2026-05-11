@@ -110,7 +110,7 @@
       {% for n in news %}
         <div class="news-card">
           <h3 class="news-card__title">{{ n.title }}</h3>
-          <p class="news-card__text">{{ n.text|linebreaks }}</p>
+          <p class="news-card__text">{{ n.full_text|linebreaks }}</p>
           <div class="news-card__date">{{ n.date|date:"d.m.Y H:i" }}</div>
         </div>
       {% endfor %}
