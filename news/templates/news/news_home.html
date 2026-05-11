@@ -110,9 +110,8 @@
       {% for n in news %}
         <div class="news-card">
           <h3 class="news-card__title">{{ n.title }}</h3>
-          <p class="news-card__text">{{ n.text|truncatewords:30 }}</p>
+          <p class="news-card__text">{{ n.text|linebreaks }}</p>
           <div class="news-card__date">{{ n.date|date:"d.m.Y H:i" }}</div>
-          <a href="{% url 'news_detail' n.id %}" style="display: inline-block; margin-top: 10px; color: var(--brand-violet); font-weight: 600; text-decoration: none;">Читать далее →</a>
         </div>
       {% endfor %}
     </div>
