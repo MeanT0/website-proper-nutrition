@@ -74,9 +74,10 @@
   .news-card__text {
     font: var(--font-p200);
     color: var(--brand-black);
-    opacity: 0.8;
     line-height: 1.6;
     margin: 0 0 16px 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
 
   .news-card__date {
@@ -110,7 +111,7 @@
       {% for n in news %}
         <div class="news-card">
           <h3 class="news-card__title">{{ n.title }}</h3>
-          <p class="news-card__text">{{ n.anons }}</p>
+          <p class="news-card__text">{{ n.full_text }}</p>
           <div class="news-card__date">{{ n.date|date:"d.m.Y H:i" }}</div>
         </div>
       {% endfor %}
